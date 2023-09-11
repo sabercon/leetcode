@@ -1,2 +1,3 @@
-# leetcode
-Solutions for LeetCode problems
+# LeetCode
+
+[Public Profile](https://leetcode.com/SaberCon)
