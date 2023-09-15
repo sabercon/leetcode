@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import List
 
 
@@ -17,3 +18,15 @@ class Solution:
                 i += 1
                 j -= 1
         return ans
+
+
+class Solution2:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        counts = Counter(nums)
+        ans = 0
+        for num, count in counts.items():
+            if num * 2 == k:
+                ans += count - count % 2
+            else:
+                ans += min(count, counts[k - num])
+        return ans // 2
