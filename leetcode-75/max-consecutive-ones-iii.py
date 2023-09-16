@@ -3,6 +3,10 @@ from typing import List
 
 class Solution:
     def longestOnes(self, nums: List[int], k: int) -> int:
+        """
+        Wonderful solution that allows k to be temporarily negative.
+        """
+
         i = 0
         for n in nums:
             if n == 0:
