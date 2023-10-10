@@ -5,8 +5,6 @@ class Solution:
     def rotate(self, nums: List[int], k: int) -> None:
         """
         Can use reversion to solve rotation problems.
-
-        Do not return anything, modify nums in-place instead.
         """
 
         def reverse(start: int, end: int) -> None:
