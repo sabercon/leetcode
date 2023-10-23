@@ -11,3 +11,8 @@ class Solution:
                 replacement[sc] = tc
                 used.add(tc)
         return True
+
+
+class Solution2:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        return len(set(zip(s, t))) == len(set(s)) == len(set(t))
