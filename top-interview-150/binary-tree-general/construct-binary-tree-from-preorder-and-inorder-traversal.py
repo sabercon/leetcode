@@ -21,3 +21,21 @@ class Solution:
             return root
 
         return build(0, 0, len(inorder) - 1)
+
+
+class Solution2:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        preorder = preorder[::-1]
+        inorder = inorder[::-1]
+
+        def build(parent: int | None) -> Optional[TreeNode]:
+            if not inorder or inorder[-1] == parent:
+                return None
+            val = preorder.pop()
+            root = TreeNode(val)
+            root.left = build(val)
+            inorder.pop()
+            root.right = build(parent)
+            return root
+
+        return build(None)
