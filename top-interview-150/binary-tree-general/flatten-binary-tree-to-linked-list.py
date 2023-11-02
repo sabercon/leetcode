@@ -23,3 +23,24 @@ class Solution:
             return right_last or left_last or node
 
         do_flatten(root)
+
+
+class Solution2:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        last, current = TreeNode(), root
+        while current:
+            left, right = current.left, current.right
+            current.left = current.right = None
+            last.right = current
+            last = current
+
+            if left:
+                left_last = left
+                while left_last.right:
+                    left_last = left_last.right
+                left_last.right = right
+
+                current = left
+            else:
+                current = right
+        return root
