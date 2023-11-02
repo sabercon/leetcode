@@ -37,3 +37,24 @@ class Solution:
 
         do_connect(root)
         return root
+
+
+class Solution2:
+    def connect(self, root: 'Node') -> 'Node':
+        current = root
+        next_level_first = next_level_last = None
+        while current:
+            for node in (current.left, current.right):
+                if not node:
+                    continue
+                if next_level_last:
+                    next_level_last.next = node
+                else:
+                    next_level_first = node
+                next_level_last = node
+            if current.next:
+                current = current.next
+            else:
+                current = next_level_first
+                next_level_first = next_level_last = None
+        return root
