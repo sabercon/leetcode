@@ -24,3 +24,24 @@ class Solution:
             return binary_search(0, 0, n // 2 + 1)
         else:
             return (binary_search(0, 0, n // 2) + binary_search(0, 0, n // 2 + 1)) / 2
+
+
+class Solution2:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        """
+        Binary search is really hard.
+        """
+
+        m, n = len(nums1), len(nums2)
+        after = (m + n - 1) // 2
+        lo, hi = max(0, after - n), min(m, after)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if nums1[mid] >= nums2[after - mid - 1]:
+                hi = mid
+            else:
+                lo = mid + 1
+
+        i = lo
+        next_nums = sorted(nums1[i:i + 2] + nums2[after - i:after - i + 2])
+        return (next_nums[0] + next_nums[1 - (m + n) % 2]) / 2
