@@ -6,3 +6,10 @@ class Solution:
             right >>= 1
             shift += 1
         return left << shift
+
+
+class Solution2:
+    def rangeBitwiseAnd(self, left: int, right: int) -> int:
+        while left < right:
+            right &= right - 1
+        return right
