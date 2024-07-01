@@ -1,8 +1,11 @@
+from typing import Set, Dict
+
+
 class Node:
 
-    def __init__(self, key: str, val: int, prev: 'Node' = None, next: 'Node' = None):
-        self.key = key
-        self.val = val
+    def __init__(self, count: int, keys: Set[str], prev: 'Node' = None, next: 'Node' = None):
+        self.count = count
+        self.keys = keys
         self.prev = prev
         self.next = next
 
@@ -14,50 +17,50 @@ class Node:
         self.prev.next = self.next
         self.next.prev = self.prev
 
-    def move_forward(self) -> None:
-        while self.val > self.next.val:
-            self.prev.next = self.next
-            self.next.prev = self.prev
-            self.prev = self.next
-            self.next = self.next.next
-            self.prev.next = self.next.prev = self
-
-    def move_back(self) -> None:
-        while self.val < self.prev.val:
-            self.next.prev = self.prev
-            self.prev.next = self.next
-            self.next = self.prev
-            self.prev = self.prev.prev
-            self.next.prev = self.prev.next = self
-
 
 class AllOne:
 
     def __init__(self):
-        self.key_to_node = {}
-        self.head = Node('', -1)
-        self.tail = Node('', 2 ** 31 - 1)
+        self.key_to_node: Dict[str, Node] = {}
+        self.head = Node(0, {''})
+        self.tail = Node(0, {''})
         self.head.next = self.tail
         self.tail.prev = self.head
 
     def inc(self, key: str) -> None:
-        if key not in self.key_to_node:
-            node = Node(key, 1)
-            node.link(self.head, self.head.next)
-            self.key_to_node[key] = node
+        if key in self.key_to_node:
+            current = self.key_to_node[key]
+            current.keys.remove(key)
         else:
-            self.key_to_node[key].val += 1
-            self.key_to_node[key].move_forward()
+            current = self.head
+        if current.next.count != current.count + 1:
+            node = Node(current.count + 1, set())
+            node.link(current, current.next)
+        else:
+            node = current.next
+        node.keys.add(key)
+        self.key_to_node[key] = node
+        if not current.keys:
+            current.unlink()
 
     def dec(self, key: str) -> None:
-        if self.key_to_node[key].val == 1:
-            self.key_to_node.pop(key).unlink()
+        current = self.key_to_node[key]
+        current.keys.remove(key)
+        if current.prev.count != current.count - 1:
+            node = Node(current.count - 1, set())
+            node.link(current.prev, current)
         else:
-            self.key_to_node[key].val -= 1
-            self.key_to_node[key].move_back()
+            node = current.prev
+        if node.count > 0:
+            node.keys.add(key)
+            self.key_to_node[key] = node
+        else:
+            del self.key_to_node[key]
+        if not current.keys:
+            current.unlink()
 
     def getMaxKey(self) -> str:
-        return self.tail.prev.key
+        return next(iter(self.tail.prev.keys))
 
     def getMinKey(self) -> str:
-        return self.head.next.key
+        return next(iter(self.head.next.keys))
