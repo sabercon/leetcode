@@ -1,4 +1,4 @@
-from math import ceil, floor
+from math import ceil, floor, log
 
 
 class Solution:
@@ -18,3 +18,13 @@ class Solution:
                 else:
                     high = mid - 1
         return str(num - 1)
+
+
+class Solution2:
+    def smallestGoodBase(self, n: str) -> str:
+        n = int(n)
+        for i in range(int(log(n, 2)), 1, -1):
+            k = int(n ** (1 / i))
+            if (k ** (i + 1) - 1) // (k - 1) == n:
+                return str(k)
+        return str(n - 1)
